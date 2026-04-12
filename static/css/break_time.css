@@ -1,0 +1,42 @@
+/* ============================================================
+   BREAK TIME — timer · minutes · seconds
+   ============================================================ */
+
+/* ── page layout ── */
+body {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.time-counter {
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 64px;
+    color: var(--accent);
+}
+
+.audio {
+    display: none;
+}
+
+.spacer {
+    font-family: monospace;
+}
+
+.btn-sm {
+    border-width: 1px;
+    border-color: var(--bg-2);
+    color: var(--text-dim);
+    font-weight: 400;
+}
+.btn-sm:hover:not(:disabled) {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.btn-sm.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}

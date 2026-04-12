@@ -1,0 +1,497 @@
+/* ============================================================
+   DRIVE — explorer · breadcrumbs · file table/grid
+           upload panel · toast · mobile FAB
+   ============================================================ */
+
+/* ── page layout ── */
+body {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text);
+}
+
+/* ── main explorer pane ── */
+.explorer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 28px;
+    overflow: hidden;
+    margin-right: 340px; /* upload panel width */
+}
+
+/* ── header row ── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.title-ascii {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-left: auto;
+}
+
+/* ── breadcrumbs ── */
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-bottom: var(--border);
+    padding-bottom: 12px;
+    gap: 0;
+}
+
+.crumb {
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color var(--transition);
+}
+.crumb:hover { color: var(--text); }
+
+.crumb-sep     { margin: 0 6px; color: var(--text-muted); user-select: none; }
+.crumb-current { color: var(--text); cursor: default; }
+
+/* ── toolbar ── */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.view-toggle .btn-sm {
+    border-width: 1px;
+    border-color: var(--bg-2);
+    color: var(--text-dim);
+    font-weight: 400;
+}
+.view-toggle .btn-sm:hover:not(:disabled) {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.view-toggle .btn-sm.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.item-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+/* ── scrollable file area ── */
+.file-table-wrap {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-2) transparent;
+}
+
+/* ── list view ── */
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: auto;
+}
+
+.file-table thead th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 400;
+    padding: 6px 10px;
+    border-bottom: var(--border);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+}
+
+.file-row {
+    cursor: pointer;
+    transition: background var(--transition);
+    border-bottom: 1px solid var(--bg-row);
+}
+.file-row:hover                  { background: var(--bg-3); }
+.file-row:hover .file-name       { color: var(--accent); }
+
+.file-row td          { padding: 9px 10px; vertical-align: middle; }
+.file-row td:nth-child(2) { width: 100%; }
+
+.icon-col  { width: 36px; }
+.file-icon { font-size: 16px; line-height: 1; }
+
+.file-name  { color: var(--text); transition: color var(--transition); word-break: break-all; }
+.dir-name   { color: var(--accent); }
+
+.file-size, .file-modified {
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.action-col {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    white-space: nowrap;
+}
+
+.dl-btn, .del-btn {
+    background: transparent;
+    border: none;
+    font-family: var(--font);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 2px 6px;
+    color: transparent;
+    transition: color var(--transition), border-color var(--transition);
+    border: 1px solid transparent;
+}
+.file-row:hover .dl-btn  { color: var(--accent); border-color: var(--bg-2); }
+.file-row:hover .del-btn { color: var(--danger-soft); border-color: var(--bg-2); }
+.dl-btn:hover            { background: var(--accent)!important; color: var(--bg)!important; }
+.del-btn:hover           { background: var(--danger-soft)!important; color: var(--bg)!important; }
+
+/* ── grid view ── */
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    padding: 4px 2px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 8px;
+    border: 1px solid var(--bg-2);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+    text-align: center;
+}
+.grid-item:hover              { border-color: var(--accent); background: var(--bg-3); }
+.grid-item:hover .grid-name   { color: var(--accent); }
+
+.grid-icon { font-size: 24px; }
+
+.grid-name {
+    font-size: 11px;
+    color: var(--text);
+    word-break: break-all;
+    transition: color var(--transition);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.grid-name.is-dir { color: var(--accent); }
+
+/* ── empty / loading / error states ── */
+.state-msg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--text-muted);
+    font-size: 14px;
+    gap: 12px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--bg-2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── toast notification ── */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--bg-2);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 13px;
+    padding: 10px 20px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 100;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ── upload panel (fixed right sidebar — desktop only) ── */
+.upload-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 340px;
+    height: 100vh;
+    background: var(--bg);
+    border-left: 2px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px;
+    gap: 16px;
+}
+
+.upload-title {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border-bottom: var(--border);
+    padding-bottom: 10px;
+}
+
+/* ── drop zone ── */
+.drop-zone {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--bg-2);
+    background-color: var(--bg-dark);
+    cursor: pointer;
+    gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+    padding: 16px;
+}
+.drop-zone.dragover { border-color: var(--accent); background-color: var(--bg-3); }
+
+.drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 0;
+}
+
+.drop-icon  { font-size: 32px; color: var(--bg-2); pointer-events: none; }
+.drop-hint  { color: var(--text-muted); font-size: 12px; text-align: center; pointer-events: none; }
+
+.pending-list {
+    list-style: none;
+    max-height: 160px;
+    overflow-y: auto;
+    font-size: 12px;
+    color: var(--text);
+    width: 100%;
+    z-index: 1;
+}
+.pending-list li {
+    padding: 3px 0;
+    border-bottom: 1px solid var(--bg-row);
+    word-break: break-all;
+}
+
+/* ── upload submit ── */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    letter-spacing: 1px;
+}
+.submit-btn:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+.submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── upload status ── */
+.upload-status {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    min-height: 18px;
+}
+.upload-status.ok  { color: var(--success); }
+.upload-status.err { color: var(--danger-soft); }
+
+/* ── mobile FAB upload button (hidden on desktop) ── */
+.upload-fab {
+    display: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MOBILE — full-width explorer, FAB upload, fixed table
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Explorer takes full width */
+    .explorer {
+        flex: 1;
+        margin-right: 0;
+        padding: 16px;
+        height: 100%;
+        /* Extra bottom padding so FAB doesn't cover last row */
+        padding-bottom: 80px;
+    }
+
+    /* Hide desktop upload panel entirely on mobile */
+    .upload-panel {
+        display: none !important;
+    }
+
+    /* Show mobile FAB upload button */
+    .upload-fab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 52px;
+        height: 52px;
+        background: var(--bg);
+        border: 2px solid var(--accent);
+        color: var(--accent);
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 30;
+        transition: background var(--transition), color var(--transition);
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .upload-fab:active {
+        background: var(--accent);
+        color: var(--bg);
+    }
+
+    /* Header */
+    .header {
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    .title-ascii {
+        margin-left: 0;
+        order: -1;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 6px;
+        font-size: 16px;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .breadcrumbs {
+        font-size: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+
+    /* File table: hide SIZE and MODIFIED on mobile */
+    .file-table {
+        font-size: 13px;
+    }
+
+    .file-table thead th:nth-child(3),
+    .file-table thead th:nth-child(4),
+    .file-row td:nth-child(3),
+    .file-row td:nth-child(4) {
+        display: none;
+    }
+
+    /* Always show action buttons on mobile (not just on hover) */
+    .dl-btn  {
+        display: none; /* tap row to download */
+    }
+    .del-btn {
+        color: var(--danger-soft) !important;
+        border-color: var(--bg-2) !important;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .file-row td { padding: 10px 8px; }
+    .file-icon   { font-size: 18px; }
+
+    .file-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 52vw;
+        display: block;
+    }
+
+    /* Grid view */
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .grid-icon { font-size: 20px; }
+    .grid-name { font-size: 10px; }
+
+    /* Toast above FAB */
+    .toast { bottom: 84px; }
+}
+
+@media (max-width: 480px) {
+    .explorer {
+        padding: 12px;
+        padding-bottom: 80px;
+    }
+
+    .header .btn {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .file-table {
+        font-size: 12px;
+    }
+
+    .file-name {
+        max-width: 44vw;
+    }
+
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    }
+}

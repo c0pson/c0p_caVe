@@ -1,0 +1,374 @@
+/* ============================================================
+   NEWS — youtube feed grid
+   ============================================================ */
+
+/* ── page layout (mirrors drive) ── */
+body {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text);
+}
+
+/* ── main explorer pane ── */
+.explorer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 28px;
+    overflow: hidden;
+}
+
+/* ── header row (reuses .btn .btn-sm from base) ── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.title-ascii {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-left: auto;
+}
+
+/* ── toolbar ── */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.feed-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    border-bottom: var(--border);
+    padding-bottom: 10px;
+    flex: 1;
+}
+
+.view-toggle .btn-sm {
+    border-width: 1px;
+    border-color: var(--bg-2);
+    color: var(--text-dim);
+    font-weight: 400;
+}
+.view-toggle .btn-sm:hover:not(:disabled) {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.view-toggle .btn-sm.active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.item-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ── scrollable feed area ── */
+.feed-wrap {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-2) transparent;
+    padding-right: 4px;
+}
+
+/* ── video grid ── */
+.feed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    padding: 2px;
+}
+
+/* ── video card ── */
+.video-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-dark);
+    border: 1px solid var(--bg-2);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.video-card:hover {
+    border-color: var(--accent);
+    background: var(--bg-3);
+}
+
+.video-card:hover .video-title {
+    color: var(--accent);
+}
+
+/* thumbnail */
+.video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--bg-2);
+    flex-shrink: 0;
+}
+
+.video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-bottom: 2px solid var(--accent);
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+}
+
+.video-card:hover .video-thumb::after {
+    opacity: 1;
+}
+
+/* channel tag on thumbnail */
+.video-channel-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.72);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* card body */
+.video-body {
+    padding: 8px 10px 10px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.video-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.45;
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+.video-channel {
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+.video-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ── empty / loading / error (reuses base .state-msg, .spinner) ── */
+.state-msg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--text-muted);
+    font-size: 14px;
+    gap: 12px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--bg-2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── toast (mirrors drive exactly) ── */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--bg-2);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 13px;
+    padding: 10px 20px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ── new-entry animation ── */
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.video-card--new {
+    animation: card-in 0.25s ease forwards;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .explorer {
+        flex: 1;
+        padding: 16px;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    .title-ascii {
+        margin-left: 0;
+        order: -1;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .toolbar {
+        margin-bottom: 12px;
+    }
+
+    .feed-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+    }
+
+    .video-title { font-size: 11px; }
+
+    .toast { bottom: 16px; }
+}
+
+@media (max-width: 480px) {
+    .explorer {
+        padding: 12px;
+    }
+
+    .feed-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .video-body { padding: 6px 8px 8px; }
+    .video-title { font-size: 11px; -webkit-line-clamp: 3; line-clamp: 3; }
+    .video-channel { display: none; }
+}
+
+/* ── video modal ── */
+.video-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-modal.open {
+    display: flex;
+}
+
+.video-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    cursor: pointer;
+}
+
+.video-modal__content {
+    position: relative;
+    z-index: 1;
+    width: min(92vw, 1100px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.video-modal__close {
+    align-self: flex-end;
+}
+
+/* 16:9 ratio wrapper — same technique as the embed snippet */
+.video-modal__ratio {
+    position: relative;
+    padding-bottom: 56.25%;
+}
+
+.video-modal__ratio iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--accent);
+}
+
+@media (max-width: 600px) {
+    .video-modal__content {
+        width: 100vw;
+    }
+
+    .video-modal__ratio iframe {
+        border-width: 1px;
+    }
+}

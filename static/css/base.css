@@ -1,0 +1,95 @@
+/* ============================================================
+   BASE — variables · reset · shared primitives
+   c0p CaVe  ·  retro-terminal palette
+   ============================================================ */
+
+:root {
+    --bg:         #1b2027;
+    --bg-2:       #292d33;
+    --bg-3:       #2c313a;
+    --bg-dark:    #1e2229;
+    --bg-row:     #313540;
+    --accent:     #ffc235;
+    --text:       #EEEEEE;
+    --text-dim:   #888;
+    --text-muted: #555;
+    --danger:     #ff6b6b;
+    --danger-soft:#e07070;
+    --success:    #7bc87b;
+    --font:       "B612 Mono";
+    --border:     1px solid var(--bg-2);
+    --transition: 0.15s ease;
+}
+
+/* ── reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── base body ── */
+body {
+    background-color: var(--bg);
+    color: var(--accent);
+    font-family: var(--font);
+    font-weight: 400;
+}
+
+/* ── user-select utility ── */
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* ── shared button ──
+   Use for any bordered yellow button / link-button.
+   Variants: .btn-sm (compact), .btn-danger (red border)
+   ── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+    padding: 6px 14px;
+}
+.btn:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+.btn:disabled             { opacity: 0.3; cursor: default; }
+
+.btn-sm { font-size: 12px; padding: 4px 10px; }
+
+.btn-danger {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) { background: var(--danger); color: var(--bg); }
+
+/* ── panel header bar ── */
+.panel-header {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 10px 0;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* ── thin scrollbar ── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-2); }
