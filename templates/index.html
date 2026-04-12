@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body class="no-select">
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+    </script>
+    <!-- ── left sidebar toggle ── -->
+    <button class="sidebar-btn left" onclick="toggleLeftSidebar()">&lt;</button>
+
+    <!-- ── left panel: tasks ── -->
+    <div class="left-panel">
+        <div class="tasks-panel">
+            <div class="panel-header">TASK LIST</div>
+            <div class="task-input-group">
+                <input id="task-input" type="text" class="task-input"
+                    placeholder="New task..."
+                    onkeypress="if(event.key==='Enter') addTask()">
+                <button class="task-add-btn" onclick="addTask()">+</button>
+            </div>
+            <div id="tasks-list" class="tasks-list"></div>
+        </div>
+    </div>
+
+    <!-- ── right sidebar toggle ── -->
+    <button class="sidebar-btn right" onclick="toggleRightSidebar()">&gt;</button>
+
+    <!-- ── right panel: clock + weather + devices ── -->
+    <div class="right-panel">
+        <span id="time"></span>
+
+        <div class="weather-panel">
+            <div class="weather-display">
+                <div class="weather-row">
+                    <span class="weather-label">TEMPERATURE</span>
+                    <span class="weather-value">—</span>
+                </div>
+                <div class="weather-row">
+                    <span class="weather-label">CONDITION</span>
+                    <span class="weather-value">—</span>
+                </div>
+                <div class="weather-row">
+                    <span class="weather-label">WIND SPEED</span>
+                    <span class="weather-value">—</span>
+                </div>
+                <div class="weather-row">
+                    <span class="weather-label">HUMIDITY</span>
+                    <span class="weather-value">—</span>
+                </div>
+                <div class="weather-row">
+                    <span class="weather-label">PRESSURE</span>
+                    <span class="weather-value">—</span>
+                </div>
+                <div class="weather-row">
+                    <span class="weather-label">CLOUD COVER</span>
+                    <span class="weather-value">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="device-panel">
+            <div class="device-display">
+                <div id="device-list" class="device-list">
+                    <div class="device-empty">[ SCANNING... ]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── main content ── -->
+    <div class="main-content">
+        <div class="bat-logo no-select">
+            <pre>
+       _,     _   _    ,_
+    o888P     Y8o8Y     Y888o.
+  d88888      88888      88888b
+,8888888b_  _d88888b_  _d8888888,
+<span id="bat-status">88888888888 LOADING ...8888888888</span>
+888888888888888888888888888888888
+ Y8888P"Y888P"Y888P-Y888P"Y88888'
+  Y888   '8'   Y8P   '8'   888Y
+   '8o          V          o8'
+      `                   `
+            </pre>
+        </div>
+        <div class="apps-container">
+            <a href="{{ url_for('drive') }}" class="btn app-button">DRIVE</a>
+            <a href="{{ url_for('youtube') }}" class="btn app-button">YOUTUBE</a>
+            <a href="{{ url_for('camera') }}" class="btn app-button">CAMERA</a>
+            <a href="{{ url_for('library') }}" class="btn app-button">LIBRARY</a>
+            <a href="{{ url_for('break_time') }}" class="btn app-button">BREAK</a>
+            <a href="{{ url_for('news') }}" class="btn app-button">NEWS</a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/weather.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pi-status.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tailscale_devices.js') }}"></script>
+</body>
+</html>

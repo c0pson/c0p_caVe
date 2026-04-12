@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drive.css') }}">
+</head>
+<body class="no-select">
+
+    <!-- ── main explorer ── -->
+    <div class="explorer">
+        <div class="header">
+            <form action="/"><button type="submit" class="btn btn-sm">HOME</button></form>
+            <button type="button" class="btn btn-sm" onclick="createNewDirectory()">NEW DIR</button>
+            <button type="button" class="btn btn-sm" onclick="loadDirectory(currentPath)">REFRESH</button>
+            <span class="title-ascii">DRIVE</span>
+        </div>
+
+        <nav class="breadcrumbs" id="breadcrumbs"></nav>
+
+        <div class="toolbar">
+            <div class="view-toggle">
+                <button id="list-btn" class="btn btn-sm active" onclick="setView('list')">☰ LIST</button>
+                <button id="grid-btn" class="btn btn-sm"        onclick="setView('grid')"># GRID</button>
+            </div>
+            <span class="item-count" id="item-count"></span>
+        </div>
+
+        <div class="file-table-wrap" id="file-area">
+            <div class="state-msg">
+                <div class="spinner"></div>
+                <span>LOADING...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── upload panel (desktop sidebar) ── -->
+    <div class="upload-panel" id="upload-panel">
+        <div class="upload-title panel-header">UPLOAD FILES</div>
+        <div id="drop-zone" class="drop-zone">
+            <p class="drop-hint">DROP FILES HERE<br>OR CLICK TO BROWSE</p>
+            <ul id="pending-list" class="pending-list"></ul>
+            <input id="file-input" type="file" name="files" multiple>
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="uploadFiles()">UPLOAD</button>
+        <div class="upload-status" id="upload-status"></div>
+    </div>
+
+    <!-- ── mobile FAB upload (hidden on desktop) ── -->
+    <label class="upload-fab" id="upload-fab" title="Upload files">
+        ⬆
+        <input id="fab-file-input" type="file" name="files" multiple style="display:none">
+    </label>
+
+    <!-- ── toast ── -->
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/drive.js') }}"></script>
+</body>
+</html>

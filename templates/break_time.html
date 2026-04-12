@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/break_time.css') }}">
+</head>
+<script type="text/javascript">
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+</script>
+<body class="no-select">
+    <div class="time-counter">
+        <span class="minutes">20</span><span class="spacer">:</span><span class="seconds">00</span>
+    </div>
+    <div>
+        <form action="/"><button id="return" type="submit" class="btn" disabled>HOME</button></form>
+    </div>
+    <div class="audio">
+        <audio id="MyAudio">
+            <source src="{{ url_for('static', filename='assets/batarang.mp3') }}" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/timer.js') }}"></script>
+</body>
+</html>

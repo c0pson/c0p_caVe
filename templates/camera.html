@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/camera.css') }}">
+</head>
+<body class="no-select">
+
+    <!-- ── header ── -->
+    <div class="camera-header">
+        <span class="header-title">CAMERAS</span>
+        <div class="header-controls">
+            <form action="/" style="display: flex; gap: 8px;">
+                <button type="submit" class="btn btn-sm">HOME</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── main camera container ── -->
+    <div class="camera-container">
+        <div class="all-cameras">
+
+            <!-- Camera 1 -->
+            <div class="ip-camera">
+                <div class="camera-title">CAMERA 1</div>
+                <img class="webcam-video" src="http://100.102.30.107:8080/video" crossorigin="anonymous">
+                <div class="camera-controls">
+                    <button class="btn snapshot-btn" onclick="takeSnapshot(1, this.closest('.ip-camera').querySelector('img'))">SNAPSHOT</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── toast notification ── -->
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+</body>
+</html>

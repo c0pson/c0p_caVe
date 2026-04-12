@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/library.css') }}">
+</head>
+<body class="no-select">
+
+    <!-- ── header ── -->
+    <header class="lib-header">
+        <a href="{{ url_for('index') }}" class="btn btn-sm">HOME</a>
+        <span class="lib-title"></span>
+        <div class="lib-header-right">
+            <input id="lib-search" type="text" class="lib-search" placeholder="SEARCH...">
+            <button class="btn lib-add-toggle" onclick="toggleAddForm()">ADD</button>
+        </div>
+    </header>
+
+    <!-- ── add form ── -->
+    <div id="lib-add-form" class="lib-add-form hidden">
+        <div class="lib-add-inner">
+            <div class="lib-form-row">
+                <label class="lib-form-label">URL</label>
+                <input id="f-url" type="url" class="lib-form-input" placeholder="https://">
+            </div>
+            <div class="lib-form-row">
+                <label class="lib-form-label">SHORTNAME</label>
+                <input id="f-shortname" type="text" class="lib-form-input" placeholder="My Site">
+            </div>
+            <div class="lib-form-row">
+                <label class="lib-form-label">TAG</label>
+                <input id="f-tag" type="text" class="lib-form-input" placeholder="tools / dev / ref">
+            </div>
+            <div class="lib-form-row lib-form-row--full">
+                <label class="lib-form-label">NOTES</label>
+                <input id="f-description" type="text" class="lib-form-input" placeholder="Optional notes">
+            </div>
+            <div class="lib-form-actions">
+                <button class="btn lib-submit-btn" onclick="submitBookmark()">SAVE</button>
+                <button class="btn lib-cancel-btn" onclick="toggleAddForm()">CANCEL</button>
+                <span id="lib-form-msg" class="lib-form-msg"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── tag filter bar ── -->
+    <div class="lib-tag-bar" id="lib-tag-bar">
+        <button class="lib-tag-pill active" data-tag="" onclick="setTagFilter('')">ALL</button>
+    </div>
+
+    <!-- ── bookmark list ── -->
+    <main class="lib-main">
+        <div class="lib-list-header">
+            <span>#</span>
+            <span>NAME</span>
+            <span>URL</span>
+            <span>TAG</span>
+            <span>ADDED</span>
+            <span></span>
+        </div>
+        <div id="lib-list" class="lib-list">
+            <div class="lib-empty">[ LOADING... ]</div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/library.js') }}"></script>
+</body>
+</html>

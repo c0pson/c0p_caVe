@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/youtube.css') }}">
+</head>
+<body class="no-select">
+
+    <div class="explorer">
+
+        <div class="header">
+            <form action="/"><button type="submit" class="btn btn-sm">HOME</button></form>
+            <button type="button" class="btn btn-sm" id="refresh-btn">REFRESH</button>
+            <span class="title-ascii">YOUTUBE</span>
+        </div>
+
+        <div class="toolbar">
+            <span class="feed-label"></span>
+            <div class="view-toggle">
+                <button id="sort-date-btn" class="btn btn-sm active" data-sort="date">DATE ↓</button>
+                <button id="sort-channel-btn" class="btn btn-sm" data-sort="channel">CHANNEL</button>
+            </div>
+            <span class="item-count" id="item-count"></span>
+        </div>
+
+        <div class="feed-wrap" id="feed-area">
+            <div class="state-msg">
+                <div class="spinner"></div>
+                <span>LOADING...</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal__backdrop" id="modal-backdrop"></div>
+        <div class="video-modal__content">
+            <button class="video-modal__close btn btn-sm" id="modal-close">CLOSE</button>
+            <div class="video-modal__ratio">
+                <iframe id="modal-iframe"
+                    src=""
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowfullscreen
+                    title="Video Embed">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/youtube.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            gap: 24px;
+            padding: 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--accent);
+        }
+
+        .placeholder {
+            color: var(--text-muted);
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                gap: 16px;
+                padding: 16px;
+            }
+
+            .page-title {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+
+            .placeholder {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body class="no-select">
+    <span class="page-title">NEWS</span>
+    <span class="placeholder">— COMING SOON —</span>
+    <a href="/" class="btn btn-sm">← HOME</a>
+</body>
+</html>
