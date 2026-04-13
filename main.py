@@ -16,11 +16,13 @@ from src.tailscale import get_all_devices
 from src.secrets import get_secret
 from src.constants import SECRET_TYPE, SECRET_DIR
 from src.youtube_feed import YouTube
- 
+from src.moon import MoonPhaseCalculator
+
 app = Flask(__name__)
 
 weather = Weather()
 youtube_feed = YouTube()
+moon = MoonPhaseCalculator()
 
 PI_BASE = get_secret(SECRET_TYPE.PI_SERVER)["url"]
 
@@ -172,6 +174,15 @@ def weather_info():
     weather_data = weather.update_info(lat, lon)
     return jsonify(weather_data)
 
+# ===================== MOON ==================== #
+
+@app.route("/api/moon-phase")
+def moon_phase():
+    return jsonify({
+        "moon_phase_name"  : moon.moon_phase().name,
+        "moon_phase_ascii" : moon.moon_phase().value
+    })
+
 # =================== YOUTUBE =================== #
 
 @app.route("/api/youtube")
@@ -285,6 +296,37 @@ def delete_bookmark(bookmark_id):
 @app.route("/api/get-all-tailscale-devices")
 def get_all_tailscale_devices():
     return jsonify(get_all_devices())
+
+# =================== YOUTUBE =================== #
+
+@app.route("/api/youtube/watched", methods=["GET"])
+def get_watched():
+    try:
+        resp = requests.get(f"{PI_BASE}/api/youtube/watched", timeout=10)
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/youtube/watched", methods=["POST"])
+def mark_watched():
+    try:
+        data = request.get_json()
+        resp = requests.post(f"{PI_BASE}/api/youtube/watched", json=data, timeout=10)
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/youtube/watched", methods=["DELETE"])
+def unmark_watched():
+    try:
+        data = request.get_json()
+        resp = requests.delete(f"{PI_BASE}/api/youtube/watched", json=data, timeout=10)
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
 
 # ===================== SW ====================== #
 
