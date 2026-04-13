@@ -68,6 +68,30 @@ body {
     color: var(--accent);
 }
 
+/* history button */
+#history-btn {
+    border-width: 1px;
+    border-color: var(--bg-2);
+    color: var(--text-dim);
+    font-weight: 400;
+    white-space: nowrap;
+}
+#history-btn:hover:not(:disabled) {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+#history-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255, 211, 105, 0.06);
+}
+
+#watched-count {
+    color: var(--accent);
+    font-size: 11px;
+}
+
 .item-count {
     font-size: 12px;
     color: var(--text-muted);
@@ -112,6 +136,16 @@ body {
     color: var(--accent);
 }
 
+/* watched card — subtle amber left border */
+.video-card--watched {
+    border-left: 2px solid var(--accent);
+    opacity: 0.75;
+}
+
+.video-card--watched:hover {
+    opacity: 1;
+}
+
 /* thumbnail */
 .video-thumb {
     position: relative;
@@ -153,10 +187,50 @@ body {
     font-size: 10px;
     letter-spacing: 0.5px;
     padding: 2px 6px;
-    max-width: 100%;
+    max-width: calc(100% - 28px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* ── tick button ── */
+.video-tick {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.72);
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition), color var(--transition), background var(--transition);
+    padding: 0;
+    z-index: 2;
+}
+
+/* show tick on card hover */
+.video-card:hover .video-tick {
+    opacity: 1;
+}
+
+/* watched tick is always visible and accented */
+.video-tick--watched {
+    opacity: 1 !important;
+    color: var(--accent);
+    background: rgba(255, 211, 105, 0.18);
+}
+
+.video-tick:hover {
+    color: var(--accent);
+    background: rgba(255, 211, 105, 0.25);
 }
 
 /* card body */
@@ -296,6 +370,9 @@ body {
 
     .video-title { font-size: 11px; }
 
+    /* always show tick on mobile (no hover) */
+    .video-tick { opacity: 1; }
+
     .toast { bottom: 16px; }
 }
 
@@ -312,6 +389,9 @@ body {
     .video-body { padding: 6px 8px 8px; }
     .video-title { font-size: 11px; -webkit-line-clamp: 3; line-clamp: 3; }
     .video-channel { display: none; }
+
+    /* hide sort controls in history mode to save space */
+    #sort-controls { display: none; }
 }
 
 /* ── video modal ── */
@@ -348,7 +428,7 @@ body {
     align-self: flex-end;
 }
 
-/* 16:9 ratio wrapper — same technique as the embed snippet */
+/* 16:9 ratio wrapper */
 .video-modal__ratio {
     position: relative;
     padding-bottom: 56.25%;
