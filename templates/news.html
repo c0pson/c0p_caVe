@@ -11,50 +11,45 @@
     <meta name="theme-color" content="#222831">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            gap: 24px;
-            padding: 20px;
-        }
-
-        .page-title {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: var(--accent);
-        }
-
-        .placeholder {
-            color: var(--text-muted);
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 480px) {
-            body {
-                gap: 16px;
-                padding: 16px;
-            }
-
-            .page-title {
-                font-size: 18px;
-                letter-spacing: 2px;
-            }
-
-            .placeholder {
-                font-size: 12px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/news.css') }}">
 </head>
 <body class="no-select">
-    <span class="page-title">NEWS</span>
-    <span class="placeholder">— COMING SOON —</span>
-    <a href="/" class="btn btn-sm">← HOME</a>
+
+    <div class="explorer">
+
+        <div class="header">
+            <form action="/"><button type="submit" class="btn btn-sm">HOME</button></form>
+            <button type="button" class="btn btn-sm" id="refresh-btn">REFRESH</button>
+            <span class="title-ascii">NEWS</span>
+        </div>
+
+        <div class="toolbar">
+            <div class="view-toggle">
+                <button id="sort-date-btn" class="btn btn-sm active" data-sort="date">DATE ↓</button>
+                <button id="sort-source-btn" class="btn btn-sm" data-sort="source">SOURCE</button>
+            </div>
+            <div class="view-toggle">
+                <button id="grid-btn" class="btn btn-sm active"># GRID</button>
+                <button id="list-btn" class="btn btn-sm">☰ LIST</button>
+            </div>
+            <span class="item-count" id="item-count"></span>
+        </div>
+
+        <div class="source-bar" id="source-bar">
+            <button class="source-pill active">ALL</button>
+        </div>
+
+        <div class="feed-wrap" id="feed-area">
+            <div class="state-msg">
+                <div class="spinner"></div>
+                <span>LOADING...</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/news.js') }}"></script>
 </body>
 </html>
