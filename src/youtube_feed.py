@@ -44,14 +44,13 @@ class YouTube:
     def __init__(self) -> None:
         self.channels: dict[str, str] = self.create_rss_links()
         self.last_created: float = 0.0
-        self.create_feed()
+        self.feed: list[BetterParser] = []
 
     def create_feed(self) -> bool:
-        current_time = time.time()
-        if current_time - self.last_created < 3600:
+        current_time = time.monotonic()
+        if current_time - self.last_created < 900:
             return False
-        self.last_created = current_time
-        self.feed: list[BetterParser] = []
+        self.feed = []
         for id in self.channels.values():
             try:
                 d = feedparser.parse(id)
@@ -63,6 +62,7 @@ class YouTube:
                     self.feed.append(BetterParser().parse(entry, channel).to_json())
             except Exception as e:
                 print(f"Error while parsing the content: {e}\n\n{d}")
+        self.last_created = current_time
         return True
 
     def get_feed(self) -> tuple[list[BetterParser], bool]:
