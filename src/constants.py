@@ -13,6 +13,11 @@ class SECRET_TYPE(StrEnum):
     OPEN_WEATHER = "open-weather"
     PI_SERVER = "pi-server"
     YOUTUBE = "youtube"
+    NEWS = "news"
+
+class NEWS(StrEnum):
+    WSJ = "wsj"
+    LEGO = "lego"
 
 # MOON PHASES
 
