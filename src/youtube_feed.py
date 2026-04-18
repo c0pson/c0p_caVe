@@ -45,7 +45,6 @@ class YouTube:
         self.channels: dict[str, str] = self.create_rss_links()
         self.last_created = 0
         self.create_feed()
-        print(self.feed[0])
 
     def create_feed(self) -> bool:
         current_time = time.time()
@@ -53,13 +52,16 @@ class YouTube:
             return False
         self.feed: list[BetterParser] = []
         for id in self.channels.values():
-            d = feedparser.parse(id)
-            channel = d.feed.title
-            for entry in d.entries:
-                url: str = entry.links[0].href
-                if url.startswith("https://www.youtube.com/shorts"):
-                    continue
-                self.feed.append(BetterParser().parse(entry, channel).to_json())
+            try:
+                d = feedparser.parse(id)
+                channel = d.feed.title
+                for entry in d.entries:
+                    url: str = entry.links[0].href
+                    if url.startswith("https://www.youtube.com/shorts"):
+                        continue
+                    self.feed.append(BetterParser().parse(entry, channel).to_json())
+            except Exception as e:
+                print(f"Error while parsing the content: {e}\n\n{d}")
         return True
 
     def get_feed(self) -> tuple[list[BetterParser], bool]:
@@ -73,6 +75,3 @@ class YouTube:
         for channel, id in channels.items():
             channels_urls[channel] = f"https://www.youtube.com/feeds/videos.xml?channel_id={id}"
         return channels_urls
-
-if __name__ == "__main__":
-    YouTube()
