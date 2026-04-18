@@ -1,9 +1,9 @@
 import feedparser
+
 from dataclasses import dataclass
+from typing import Self
 import time
 import json
-
-from typing import Self
 
 from src.secrets import get_secret
 from src.constants import SECRET_TYPE
@@ -43,13 +43,14 @@ class BetterParser():
 class YouTube:
     def __init__(self) -> None:
         self.channels: dict[str, str] = self.create_rss_links()
-        self.last_created = 0
+        self.last_created: float = 0.0
         self.create_feed()
 
     def create_feed(self) -> bool:
         current_time = time.time()
         if current_time - self.last_created < 3600:
             return False
+        self.last_created = current_time
         self.feed: list[BetterParser] = []
         for id in self.channels.values():
             try:
