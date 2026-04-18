@@ -11,18 +11,26 @@ from flask import (
 import requests # type: ignore
 import os
 
-from src.weather import Weather
+from src.constants import SECRET_TYPE, SECRET_DIR, NEWS
 from src.tailscale import get_all_devices
 from src.secrets import get_secret
-from src.constants import SECRET_TYPE, SECRET_DIR
-from src.youtube_feed import YouTube
 from src.moon import MoonPhaseCalculator
+from src.youtube_feed import YouTube
+from src.news_feed import NewsFeed
+from src.weather import Weather
 
 app = Flask(__name__)
 
 weather = Weather()
 youtube_feed = YouTube()
 moon = MoonPhaseCalculator()
+news_feeds: dict[str, NewsFeed] = {}
+
+for source in NEWS:
+    try:
+        news_feeds[source] = NewsFeed(source)
+    except Exception as e:
+        print(f"Failed to init news feed {source}: {e}")
 
 PI_BASE = get_secret(SECRET_TYPE.PI_SERVER)["url"]
 
@@ -186,12 +194,26 @@ def moon_phase():
 # =================== YOUTUBE =================== #
 
 @app.route("/api/youtube")
+def api_youtube():
+    feed, updated = youtube_feed.get_feed()
+    print(youtube_feed)
+    return jsonify({"feed": feed, "updated": updated})
+
+# ==================== NEWS ===================== #
+
+@app.route("/api/news")
 def api_news():
     force = request.args.get("force") == "1"
-    if force:
-        youtube_feed.last_created = 0
-    feed, updated = youtube_feed.get_feed()
-    return jsonify({"feed": feed, "updated": updated})
+    combined_feed = []
+    any_updated = False
+    for feed_obj in news_feeds.values():
+        if force:
+            feed_obj.last_created = 0
+        feed, updated = feed_obj.get_feed()
+        combined_feed.extend(feed)
+        if updated:
+            any_updated = True
+    return jsonify({"feed": combined_feed, "updated": any_updated})
 
 # ==================== TASKS ==================== #
 
