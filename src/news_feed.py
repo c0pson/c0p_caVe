@@ -46,7 +46,7 @@ class BetterParser:
             ensure_ascii=False
         )
 
-class Feed:
+class NewsFeed:
     def __init__(self, source: NEWS) -> None:
         self.last_created: int = 0
         self.links: dict[str, str] = get_secret(SECRET_TYPE.NEWS)[source]
@@ -70,7 +70,3 @@ class Feed:
     def get_feed(self):
         update = self.create_feed()
         return self.feed, update
-
-if __name__ == "__main__":
-    feed1 = Feed(NEWS.LEGO)
-    feed2 = Feed(NEWS.WSJ)
