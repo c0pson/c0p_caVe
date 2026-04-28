@@ -129,7 +129,6 @@ def download_file(filepath):
             timeout=30,
         )
         pi_resp.raise_for_status()
-
         filename = filepath.split("/")[-1]
         content_type = pi_resp.headers.get("Content-Type", "application/octet-stream")
 
@@ -144,7 +143,6 @@ def download_file(filepath):
         }
         if "Content-Length" in pi_resp.headers:
             headers["Content-Length"] = pi_resp.headers["Content-Length"]
-
         return Response(
             stream_with_context(generate()),
             status=pi_resp.status_code,
