@@ -72,6 +72,10 @@ def break_time():
 def news() -> str:
     return render_template("news.html")
 
+@app.route("/notes")
+def notes():
+    return render_template("notes.html")
+
 # ===================== API ===================== #
 # Connection layer between the PI server and 
 # end device. Traffic is internal in tailscale
@@ -160,8 +164,16 @@ def proxy_upload():
     params = {}
     if upload_path:
         params["path"] = upload_path
-    resp = requests.post(upload_url, files=multi, params=params)
-    return jsonify(resp.json()), resp.status_code
+    try:
+        resp = requests.post(upload_url, files=multi, params=params, timeout=60)
+        try:
+            data = resp.json()
+        except requests.exceptions.JSONDecodeError:
+            data = {"error": f"Pi returned non-JSON (status {resp.status_code}): {resp.text[:200]}"}
+            return jsonify(data), 502
+        return jsonify(data), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
 
 # ================== PI SERVER ================== #
 
@@ -345,6 +357,94 @@ def unmark_watched():
         resp = requests.delete(f"{PI_BASE}/api/youtube/watched", json=data, timeout=10)
         resp.raise_for_status()
         return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+# ==================== NOTES ==================== #
+
+@app.route("/api/notes", methods=["GET"])
+def get_notes():
+    try:
+        resp = requests.get(f"{PI_BASE}/api/notes", timeout=10)
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/notes", methods=["POST"])
+def create_note():
+    try:
+        # forward multipart form data (text fields + images)
+        files = request.files.getlist("images")
+        multi = [("images", (f.filename, f.stream, f.mimetype)) for f in files]
+
+        form_data = {
+            "title":          request.form.get("title", ""),
+            "content":        request.form.get("content", ""),
+            "color":          request.form.get("color", "default"),
+            "pinned":         request.form.get("pinned", "0"),
+        }
+
+        resp = requests.post(
+            f"{PI_BASE}/api/notes",
+            data=form_data,
+            files=multi,
+            timeout=30
+        )
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/notes/<int:note_id>", methods=["PUT"])
+def update_note(note_id):
+    try:
+        files = request.files.getlist("images")
+        multi = [("images", (f.filename, f.stream, f.mimetype)) for f in files]
+
+        form_data = {
+            "title":           request.form.get("title", ""),
+            "content":         request.form.get("content", ""),
+            "color":           request.form.get("color", "default"),
+            "pinned":          request.form.get("pinned", "0"),
+            "removed_images":  request.form.get("removed_images", "[]"),
+        }
+
+        resp = requests.put(
+            f"{PI_BASE}/api/notes/{note_id}",
+            data=form_data,
+            files=multi,
+            timeout=30
+        )
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/notes/<int:note_id>", methods=["DELETE"])
+def delete_note(note_id):
+    try:
+        resp = requests.delete(f"{PI_BASE}/api/notes/{note_id}", timeout=10)
+        resp.raise_for_status()
+        return jsonify(resp.json()), resp.status_code
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 502
+
+@app.route("/api/notes/image/<image_id>")
+def get_note_image(image_id):
+    try:
+        pi_resp = requests.get(
+            f"{PI_BASE}/api/notes/image/{image_id}",
+            stream=True,
+            timeout=15
+        )
+        pi_resp.raise_for_status()
+        content_type = pi_resp.headers.get("Content-Type", "image/png")
+        return Response(
+            stream_with_context(pi_resp.iter_content(chunk_size=65536)),
+            status=pi_resp.status_code,
+            headers={"Content-Type": content_type}
+        )
     except requests.RequestException as e:
         return jsonify({"error": str(e)}), 502
 
