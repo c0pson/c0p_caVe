@@ -12,6 +12,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200&icon_names=book,calendar_today,camera_video,cloud,code,newspaper,notes,play_arrow,timer" />
 </head>
 <body class="no-select">
     <script>
@@ -105,17 +107,42 @@
             </pre>
         </div>
         <div class="apps-container">
-            <a href="{{ url_for('drive') }}" class="btn app-button">DRIVE</a>
-            <a href="{{ url_for('youtube') }}" class="btn app-button">YOUTUBE</a>
-            <a href="{{ url_for('camera') }}" class="btn app-button">CAMERA</a>
-            <a href="{{ url_for('library') }}" class="btn app-button">LIBRARY</a>
-            <a href="{{ url_for('break_time') }}" class="btn app-button">BREAK</a>
-            <a href="{{ url_for('news') }}" class="btn app-button">NEWS</a>
-
-            <a href="#" class="btn app-button">NOTES</a>
-            <a href="#" class="btn app-button">CODE</a>
-            <a href="#" class="btn app-button">CALENDAR</a>
-            <a href="#" class="btn app-button">NOTES</a>
+            <a href="{{ url_for('drive') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">cloud</span> -->
+                 CLOUD
+            </a>
+            <a href="{{ url_for('youtube') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">play_arrow</span> -->
+                 YOUTUBE
+            </a>
+            <a href="{{ url_for('library') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">book</span> -->
+                LIBRARY
+            </a>
+            <a href="{{ url_for('break_time') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">timer</span> -->
+                TIMER
+            </a>
+            <a href="{{ url_for('news') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">newspaper</span> -->
+                NEWS
+            </a>
+            <a href="{{ url_for('notes') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">notes</span> -->
+                NOTES
+            </a>
+            <a href="#" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">code</span> -->
+                CODE
+            </a>
+            <a href="#" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">calendar_today</span> -->
+                EVENTS
+            </a>
+            <a href="{{ url_for('camera') }}" class="btn app-button">
+                <!-- <span class="material-symbols-outlined" style="font-size: 51px;">camera_video</span> -->
+                 CAMERA
+            </a>
         </div>
     </div>
 

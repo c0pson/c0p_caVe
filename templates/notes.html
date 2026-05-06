@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>c0p CaVe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#222831">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notes.css') }}">
+</head>
+<body class="no-select">
+
+    <div class="explorer">
+
+        <div class="header">
+            <form action="/"><button type="submit" class="btn btn-sm">HOME</button></form>
+            <span class="title-ascii">NOTES</span>
+        </div>
+
+        <div class="toolbar">
+            <input type="text" class="note-search" id="search-input" placeholder="SEARCH NOTES...">
+            <div class="color-filter" id="color-filter">
+                <button class="color-dot active" data-color="" title="All"></button>
+                <button class="color-dot" data-color="default" title="Default"></button>
+                <button class="color-dot" data-color="red" title="Red"></button>
+                <button class="color-dot" data-color="orange" title="Orange"></button>
+                <button class="color-dot" data-color="green" title="Green"></button>
+                <button class="color-dot" data-color="blue" title="Blue"></button>
+                <button class="color-dot" data-color="purple" title="Purple"></button>
+            </div>
+            
+            <span class="item-count" id="item-count"></span>
+        </div>
+        
+        <div class="view-toggle">
+            <button id="grid-btn" class="btn btn-sm active"># GRID</button>
+            <button id="list-btn" class="btn btn-sm">☰ LIST</button>
+        </div>
+        
+        <!-- ── pinned section ── -->
+        <div class="section-label" id="pinned-label" style="display:none">PINNED</div>
+        <div class="notes-grid" id="pinned-grid"></div>
+
+        <!-- ── others section ── -->
+        <div class="section-label" id="others-label" style="display:none">OTHERS</div>
+        <div class="notes-area" id="notes-area">
+            <div class="state-msg">
+                <div class="spinner"></div>
+                <span>LOADING...</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="note-modal" id="note-modal">
+        <div class="note-modal__backdrop" id="modal-backdrop"></div>
+        <div class="note-modal__content" id="modal-content">
+            <input type="text" class="note-modal__title" id="modal-title" placeholder="Title">
+            <div class="note-modal__body" id="modal-body" contenteditable="true" data-placeholder="Take a note..."></div>
+            <div class="note-modal__images" id="modal-images"></div>
+            <div class="note-modal__toolbar">
+                <div class="note-modal__left">
+                    <button class="note-tool-btn" id="tool-pin" title="Pin note">📌</button>
+                    <label class="note-tool-btn" id="tool-image" title="Add image">
+                        🖼️
+                        <input type="file" id="image-input" accept="image/*" multiple style="display:none">
+                    </label>
+                    <button class="note-tool-btn" id="tool-bullet" title="Toggle bullet list">☰</button>
+                    <div class="color-picker" id="color-picker">
+                        <button class="color-swatch" data-color="default"></button>
+                        <button class="color-swatch" data-color="red"></button>
+                        <button class="color-swatch" data-color="orange"></button>
+                        <button class="color-swatch" data-color="green"></button>
+                        <button class="color-swatch" data-color="blue"></button>
+                        <button class="color-swatch" data-color="purple"></button>
+                    </div>
+                </div>
+                <div class="note-modal__right">
+                    <button class="btn btn-sm btn-danger" id="tool-delete" style="display:none">DELETE</button>
+                    <button class="btn btn-sm" id="tool-close">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="note-fab" id="new-note-btn" title="New note">+</button>
+
+    <!-- ── toast ── -->
+    <div class="toast" id="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/notes.js') }}"></script>
+</body>
+</html>
