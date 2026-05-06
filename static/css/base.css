@@ -34,6 +34,8 @@ body {
     color: var(--accent);
     font-family: var(--font);
     font-weight: 400;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ── user-select utility ── */
@@ -93,3 +95,29 @@ body {
 ::-webkit-scrollbar       { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg-2); }
+
+/* ── mobile touch targets ── */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 40px;
+        padding: 8px 14px;
+    }
+
+    .btn-sm {
+        min-height: 34px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        font-size: 12px;
+        padding: 6px 10px;
+        min-height: 36px;
+    }
+
+    .btn-sm {
+        font-size: 11px;
+        min-height: 32px;
+    }
+}

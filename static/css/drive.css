@@ -27,6 +27,7 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .title-ascii {
@@ -48,6 +49,7 @@ body {
     border-bottom: var(--border);
     padding-bottom: 12px;
     gap: 0;
+    flex-shrink: 0;
 }
 
 .crumb {
@@ -67,6 +69,7 @@ body {
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
+    flex-shrink: 0;
 }
 
 .view-toggle .btn-sm {
@@ -348,7 +351,7 @@ body {
 }
 
 /* ════════════════════════════════════════════════════════════
-   MOBILE — full-width explorer, FAB upload, fixed table
+   TABLET (≤1024px) — full-width explorer, FAB upload
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
     body {
@@ -363,7 +366,6 @@ body {
         margin-right: 0;
         padding: 16px;
         height: 100%;
-        /* Extra bottom padding so FAB doesn't cover last row */
         padding-bottom: 80px;
     }
 
@@ -472,15 +474,35 @@ body {
     .toast { bottom: 84px; }
 }
 
+/* ════════════════════════════════════════════════════════════
+   PHONE (≤480px) — tighter spacing
+   ════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     .explorer {
         padding: 12px;
         padding-bottom: 80px;
     }
 
+    .header {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+
     .header .btn {
         padding: 4px 8px;
         font-size: 11px;
+    }
+
+    .title-ascii {
+        font-size: 14px;
+        letter-spacing: 2px;
+        margin-bottom: 4px;
+    }
+
+    .breadcrumbs {
+        font-size: 11px;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
     }
 
     .file-table {
@@ -493,5 +515,11 @@ body {
 
     .file-grid {
         grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    }
+
+    .toast {
+        font-size: 12px;
+        padding: 8px 16px;
+        max-width: 90vw;
     }
 }

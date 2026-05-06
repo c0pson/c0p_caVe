@@ -19,6 +19,7 @@ body {
     gap: 12px;
     padding: 20px 28px;
     border-bottom: 2px solid var(--accent);
+    flex-shrink: 0;
 }
 
 .header-title {
@@ -139,7 +140,7 @@ body {
     text-align: center;
 }
 
-/* ── toast notification (share with drive.js styling) ── */
+/* ── toast notification ── */
 .toast {
     position: fixed;
     bottom: 24px;
@@ -160,21 +161,63 @@ body {
     transform: translateX(-50%) translateY(0);
 }
 
-/* ── responsive ── */
+/* ── tablet ── */
 @media (max-width: 1024px) {
     .all-cameras {
         grid-template-columns: 1fr;
     }
-    
+
     .camera-container {
         padding: 16px 20px;
     }
-    
+
     .camera-header {
         padding: 16px 20px;
     }
 }
 
+/* ── phone ── */
 @media (max-width: 600px) {
-    
+    .camera-header {
+        padding: 12px 14px;
+        gap: 8px;
+    }
+
+    .header-title {
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    .camera-container {
+        padding: 12px;
+    }
+
+    .all-cameras {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .webcam-video {
+        min-height: 200px;
+    }
+
+    .camera-title {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    .camera-controls {
+        padding: 8px;
+    }
+
+    .camera-controls .btn {
+        font-size: 11px;
+        padding: 10px 8px;
+    }
+
+    .toast {
+        bottom: 16px;
+        font-size: 12px;
+        padding: 8px 16px;
+    }
 }

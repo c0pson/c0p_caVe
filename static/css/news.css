@@ -25,6 +25,7 @@ body {
     align-items: center;
     gap: 8px;
     margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .title-ascii {
@@ -41,6 +42,7 @@ body {
     align-items: center;
     gap: 16px;
     margin-bottom: 16px;
+    flex-shrink: 0;
 }
 
 .view-toggle .btn-sm {
@@ -364,7 +366,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   MOBILE
+   TABLET (≤1024px)
    ══════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
     body {
@@ -395,7 +397,8 @@ body {
 
     .toolbar {
         margin-bottom: 12px;
-        display: block;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .source-bar {
@@ -413,9 +416,28 @@ body {
     .toast { bottom: 16px; }
 }
 
+/* ══════════════════════════════════════════════════════════
+   PHONE (≤480px)
+   ══════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     .explorer {
         padding: 12px;
+    }
+
+    .header {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+
+    .title-ascii {
+        font-size: 14px;
+        letter-spacing: 2px;
+        margin-bottom: 2px;
+    }
+
+    .toolbar {
+        gap: 6px;
+        margin-bottom: 8px;
     }
 
     .news-grid {
@@ -436,5 +458,24 @@ body {
     .news-list-thumb {
         width: 50px;
         height: 34px;
+    }
+
+    .news-list-title {
+        font-size: 11px;
+    }
+
+    .source-pill {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .item-count {
+        font-size: 11px;
+    }
+
+    .toast {
+        font-size: 12px;
+        padding: 8px 16px;
+        max-width: 90vw;
     }
 }

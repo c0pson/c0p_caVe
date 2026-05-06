@@ -15,7 +15,6 @@ body {
     align-items: center;
     gap: 16px;
     padding: 10px 20px;
-    border-bottom: 2px solid var(--accent);
     background: var(--bg);
     flex-shrink: 0;
 }
@@ -149,7 +148,6 @@ body {
     align-items: center;
     gap: 6px;
     padding: 7px 20px;
-    border-bottom: 1px solid var(--bg-3);
     background: var(--bg);
     overflow-x: auto;
     flex-shrink: 0;
@@ -332,6 +330,11 @@ body {
 .lib-btn-del        { border-color: var(--danger); color: var(--danger); }
 .lib-btn-del:hover  { background: var(--danger); color: var(--bg); }
 
+/* highlight newly added entry */
+.lib-entry--new {
+    background: rgba(255, 194, 53, 0.06);
+}
+
 /* ── empty / error states ── */
 .lib-empty {
     color: var(--text-muted);
@@ -343,16 +346,35 @@ body {
 }
 
 /* ════════════════════════════════════════════════
-   MOBILE
+   TABLET (≤768px) — card layout
    ════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-    .lib-header { padding: 8px 12px; gap: 10px; }
-    .lib-title  { font-size: 14px; letter-spacing: 2px; }
-    .lib-search { width: 110px; font-size: 11px; }
+    .lib-header {
+        padding: 8px 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .lib-title {
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    .lib-header-right {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .lib-search {
+        width: 110px;
+        font-size: 11px;
+        flex: 1;
+        min-width: 80px;
+    }
 
     .lib-add-inner {
         grid-template-columns: 1fr 1fr;
-        padding: 20px 12px;
+        padding: 16px 12px;
     }
 
     .lib-tag-bar { padding: 6px 12px; }
@@ -374,6 +396,10 @@ body {
     .lib-idx  { display: none; }
     .lib-name { font-size: 14px; }
 
+    .lib-url {
+        max-width: 100%;
+    }
+
     .lib-meta-row {
         display: flex;
         align-items: center;
@@ -385,6 +411,76 @@ body {
     .lib-actions { margin-left: auto; }
 }
 
+/* ════════════════════════════════════════════════
+   PHONE (≤480px) — stacked form, tighter spacing
+   ════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .lib-header {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .lib-title {
+        font-size: 12px;
+        letter-spacing: 1px;
+        display: none;
+    }
+
+    .lib-header-right {
+        gap: 6px;
+    }
+
+    .lib-search {
+        width: 100%;
+        min-width: 60px;
+    }
+
+    .lib-add-toggle {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    /* Stack form fields vertically on phones */
+    .lib-add-form {
+        max-height: 350px;
+    }
+
+    .lib-add-inner {
+        grid-template-columns: 1fr;
+        padding: 12px 10px;
+        gap: 6px;
+    }
+
+    .lib-form-input {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .lib-tag-bar {
+        padding: 6px 10px;
+    }
+
+    .lib-entry {
+        padding: 10px;
+    }
+
+    .lib-name {
+        font-size: 13px;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .lib-url {
+        font-size: 10px;
+    }
+
+    .lib-btn {
+        padding: 4px 8px;
+        min-height: 28px;
+    }
+}
+
+/* ── shared utility (from index) ── */
 .device-ip-link {
     color: var(--text);
     text-decoration: none;

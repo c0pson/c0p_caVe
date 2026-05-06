@@ -8,6 +8,7 @@ body {
     place-items: center;
     height: 100vh;
     overflow: hidden;
+    padding: 20px;
 }
 
 .time-counter {
@@ -39,4 +40,33 @@ body {
 .btn-sm.active {
     border-color: var(--accent);
     color: var(--accent);
+}
+
+/* ── tablet ── */
+@media (max-width: 768px) {
+    .time-counter {
+        font-size: 52px;
+    }
+}
+
+/* ── phone ── */
+@media (max-width: 480px) {
+    .time-counter {
+        font-size: 40px;
+    }
+
+    body {
+        padding: 16px;
+    }
+
+    #return {
+        min-height: 44px;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .time-counter {
+        font-size: 32px;
+    }
 }
